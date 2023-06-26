@@ -5,16 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Auth\Events\Verified;
+use Illuminate\Http\JsonResponse;
 
 class VerificationController extends Controller
 {
 
-    public function verify($id, $hash)
+    public function verify(int $id, mixed $hash): JsonResponse
     {
         $user = User::findOrFail($id);
 
         if (! hash_equals((string) $hash, sha1($user->getEmailForVerification()))) {
-            abort(404);
+            return response()->json(['error' => 'Hash doesnt exists'], 404);
         }
 
         if ($user->hasVerifiedEmail()) {
