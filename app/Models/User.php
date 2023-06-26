@@ -62,6 +62,12 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     {
         return $this->email;
     }
+
+    public function markUserAsVerified(): void
+    {
+        $this->is_verified = 1;
+        $this->save();
+    }
     
     public static function createFromDTO(DTOInterface $DTO): User
     {

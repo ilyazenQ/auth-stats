@@ -2,41 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Actions\Verification\ResendAction;
+use App\Actions\Verification\VerifyAction;
 use Illuminate\Http\Request;
-use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\JsonResponse;
 
 class VerificationController extends Controller
 {
 
-    public function verify(int $id, mixed $hash): JsonResponse
+    public function verify(int $id, mixed $hash, VerifyAction $action): JsonResponse
     {
-        $user = User::findOrFail($id);
-
-        if (! hash_equals((string) $hash, sha1($user->getEmailForVerification()))) {
-            return response()->json(['error' => 'Hash doesnt exists'], 404);
-        }
-
-        if ($user->hasVerifiedEmail()) {
-            return response()->json(['error' => 'Your account has already been verified.'], 400);
-        }
-        $user->is_verified = 1;
-        $user->markEmailAsVerified();
-        event(new Verified($user));
-        $user->save();
-        return response()->json(['success' => 'Your account has been successfully verified.'], 200);
+        return $action->execute($id, $hash);
     }
 
-    public function resend(Request $request)
+    public function resend(Request $request, ResendAction $action): JsonResponse
     {
-        if ($request->user()->hasVerifiedEmail()) {
-            return response()->json(['message' => 'Already verified'], 400);
-        }
-
-        $request->user()->sendEmailVerificationNotification();
-
-        return response()->json(['message' => 'Verification link sent']);
+        return $action->execute($request);
     }
     
 }
