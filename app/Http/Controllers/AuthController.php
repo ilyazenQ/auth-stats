@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\VerifyEmail;
 use App\Models\User;
+use App\Services\Telegram\TelegramService;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -33,8 +34,9 @@ class AuthController extends Controller
         ]);
 
         event(new Registered($user));
-        
+
         $token = Auth::login($user);
+        TelegramService::sendMessage('New user!');
         
         return response()->json([
             'message' => 'Registration successful',
