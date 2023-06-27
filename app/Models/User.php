@@ -28,16 +28,6 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         'password',
     ];
 
-    public function getJWTIdentifier()
-    {
-        return $this->getKey();
-    }
-
-    public function getJWTCustomClaims()
-    {
-        return [];
-    }
-
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -61,6 +51,21 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     public function getEmailForVerification(): string
     {
         return $this->email;
+    }
+
+    public function events()
+    {
+        return $this->hasMany(Event::class);
+    }
+
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [];
     }
 
     public function markUserAsVerified(): void

@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\EventController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,6 +19,9 @@ Route::group(['middleware' => ['jwt.auth']], function() {
     Route::get('logout', [AuthController::class, 'logout']);
     Route::get('refresh', [AuthController::class, 'refresh']);
     Route::get('me', [AuthController::class, 'me']);
+
+    Route::post('/events', [EventController::class, 'save']);
+    Route::get('/events/stats', [EventController::class, 'getStats']);
 });
 
 Route::post('register', [AuthController::class, 'register']);

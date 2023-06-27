@@ -1,0 +1,166 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API",
+        "version": "0.1"
+    },
+    "paths": {
+        "/api/events/": {
+            "post": {
+                "tags": [
+                    "Events"
+                ],
+                "summary": "Save new event stats",
+                "operationId": "930f6b1f53faead17e5a0021ad70a20d",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "button_click"
+                                    },
+                                    "is_auth": {
+                                        "type": "boolean",
+                                        "example": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 201
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "example": {
+                                                "name": "button_click",
+                                                "is_auth": true,
+                                                "ip": "000.00.0.1",
+                                                "updated_at": "2023-05-07T05:19:19.000000Z",
+                                                "created_at": "2023-05-07T05:19:19.000000Z",
+                                                "id": 17
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/api/events/stats": {
+            "get": {
+                "tags": [
+                    "Events"
+                ],
+                "summary": "Get stats by filters",
+                "operationId": "62aee51cc52e786a8a16fd027fff0853",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Name of the event",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "button_click"
+                        }
+                    },
+                    {
+                        "name": "date_from",
+                        "in": "query",
+                        "description": "Date from",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "2022-02-25 15:30:00"
+                        }
+                    },
+                    {
+                        "name": "date_to",
+                        "in": "query",
+                        "description": "Date to",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "2024-02-25 15:30:00"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "Type to filter. Available types: by_ip, by_auth_status, by_event_name",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "by_auth_status"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Events",
+            "description": "API Endpoints of Events"
+        }
+    ]
+}
