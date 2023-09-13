@@ -34,7 +34,7 @@ class Event extends Model
         ]);
     }
 
-    public function scopeFilter($query, FilterDTO $filterDTO)
+    public function scopeFilter($query, DTOInterface $filterDTO)
     {
         $query->where('name', '=',$filterDTO->name)
                ->whereDate('created_at', '>=', $filterDTO->dateFrom)
@@ -43,7 +43,7 @@ class Event extends Model
         return $query;
     }
 
-    public static function getCountByEventName(FilterDTO $filterDTO)
+    public static function getCountByEventName(DTOInterface $filterDTO)
     {
         return self::filter($filterDTO)
             ->selectRaw('name, count(*) as count')
@@ -51,7 +51,7 @@ class Event extends Model
             ->get();
     }
 
-    public static function getCountByIp(FilterDTO $filterDTO)
+    public static function getCountByIp(DTOInterface $filterDTO)
     {
         return self::filter($filterDTO)
             ->selectRaw('ip, count(*) as count')
@@ -59,7 +59,7 @@ class Event extends Model
             ->get();
     }
 
-    public static function getCountByAuthStatus(FilterDTO $filterDTO)
+    public static function getCountByAuthStatus(DTOInterface $filterDTO)
     {
         return self::filter($filterDTO)
             ->selectRaw('is_auth, count(*) as count')
